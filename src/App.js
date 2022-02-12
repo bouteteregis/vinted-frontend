@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import axios from "axios";
+import Header from "./containers/Header";
 
 function App() {
-  return (
+  const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchData = async () => {
+    const response = await axios.get(
+      "https://lereacteur-vinted-api.herokuapp.com/offers"
+    );
+
+    // console.log(response.data);
+    setData(response.data);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return (isLoading ? (
+    <div>En cours de chargement...</div>
+  ) : (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header class="Header">
+        <div className="">
+          <div className="">
+            <Header />
+          </div>
+        </div>
       </header>
+      <div>{isHome ? <Home /> : <Offer />}</div>
     </div>
   );
 }
